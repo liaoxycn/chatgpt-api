@@ -22,6 +22,7 @@
     "node": ">=18"
   },
   "scripts": {
+    "startServer1": "npx tsx server/www",
     "build": "tsup",
     "dev": "tsup --watch",
     "clean": "del build",
@@ -35,9 +36,15 @@
     "test:prettier": "prettier '**/*.{js,jsx,ts,tsx}' --check"
   },
   "dependencies": {
+    "@vue/compiler-sfc": "3.x",
+    "cookie-parser": "^1.4.6",
+    "debug": "^4.3.4",
     "eventsource-parser": "^0.0.5",
+    "express": "^4.18.2",
     "gpt-3-encoder": "^1.1.4",
+    "http-errors": "^2.0.0",
     "keyv": "^4.5.2",
+    "morgan": "^1.10.0",
     "p-timeout": "^6.0.0",
     "quick-lru": "^6.1.1",
     "uuid": "^9.0.0"

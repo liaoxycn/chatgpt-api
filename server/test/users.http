@@ -1,0 +1,17 @@
+// test.http@url=http://localhost:3000
+
+### 获取用户列表
+get {{url}}/users/list
+
+### 注册账号
+POST {{url}}/users/register
+Content-Type: application/json
+
+{
+  "username": "user324343",
+  "password": "123456"
+}
+
+
+### 聊天
+GET {{url}}/chat/send?chatId=fff232r&text=你是谁

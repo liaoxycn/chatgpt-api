@@ -48,3 +48,5 @@ next-env.d.ts
 
 # data dumps
 out/
+package-lock.json
+pnpm-lock.yaml
