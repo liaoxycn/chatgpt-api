@@ -68,6 +68,7 @@ export default {
               resolve(text)
             } catch (e) {
               resolve('请求次数过多，请稍后再试')
+              wait = false
             }
           }
         })
