@@ -63,8 +63,12 @@ export default {
             wait = false
             resolve(window.res.text)
           } catch (e) {
-            let text = await submit()
-            resolve(text)
+            try {
+              let text = await submit()
+              resolve(text)
+            } catch (e) {
+              resolve('请求次数过多，请稍后再试')
+            }
           }
         })
       }
