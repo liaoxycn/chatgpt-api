@@ -105,26 +105,36 @@ export default {
         }
         wait = true
 
-        //first submit
-        if (!window) {
+        const submit = async () => {
           let { res, api } = await start(text)
           chatWindowMap[chatId] = { res, api }
           window = chatWindowMap[chatId]
           wait = false
           return res.text
         }
+        //first submit
+        if (!window) {
+          return await submit()
+        }
 
-        window.res = await oraPromise(
-          window.api.sendMessage(text, {
-            conversationId: window.res.conversationId,
-            parentMessageId: window.res.id
-          }),
-          {
-            text: text
+        return new Promise(async (resolve, reject) => {
+          try {
+            window.res = await oraPromise(
+              window.api.sendMessage(text, {
+                conversationId: window.res.conversationId,
+                parentMessageId: window.res.id
+              }),
+              {
+                text: text
+              }
+            )
+            wait = false
+            resolve(window.res.text)
+          } catch (e) {
+            let text = await submit()
+            resolve(text)
           }
-        )
-        wait = false
-        return window.res.text
+        })
       }
     }
   }
