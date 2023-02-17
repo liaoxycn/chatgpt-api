@@ -188,6 +188,7 @@ export class ChatGPTAPI {
       async (resolve, reject) => {
         const url = `${this._apiBaseUrl}/v1/completions`
         const headers = {
+          'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
           'Content-Type': 'application/json',
           Authorization: `Bearer ${this._apiKey}`
         }

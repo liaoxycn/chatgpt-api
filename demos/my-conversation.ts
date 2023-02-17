@@ -8,6 +8,10 @@ dotenv.config()
 let wait = false
 const chatWindowMap = {}
 
+const closeWait = () => {
+  wait = false
+}
+
 async function start(text) {
   const api = new ChatGPTAPI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -29,6 +33,9 @@ export default {
     let window = chatWindowMap[chatId]
     return {
       res: window?.res,
+      close: () => {
+        closeWait()
+      },
       send: async (text = '') => {
         if (!text.trim()) return
 
@@ -41,7 +48,7 @@ export default {
           let { res, api } = await start(text)
           chatWindowMap[chatId] = { res, api }
           window = chatWindowMap[chatId]
-          wait = false
+          closeWait()
           return res.text
         }
         //first submit
@@ -60,7 +67,7 @@ export default {
                 text: text
               }
             )
-            wait = false
+            closeWait()
             resolve(window.res.text)
           } catch (e) {
             try {
@@ -68,7 +75,7 @@ export default {
               resolve(text)
             } catch (e) {
               resolve('请求次数过多，请稍后再试')
-              wait = false
+              closeWait()
             }
           }
         })
