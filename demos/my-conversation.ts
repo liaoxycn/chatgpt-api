@@ -1,4 +1,6 @@
+import KeyvRedis from '@keyv/redis'
 import dotenv from 'dotenv-safe'
+import Keyv from 'keyv'
 import { oraPromise } from 'ora'
 
 import { ChatGPTAPI } from '../src'
@@ -13,8 +15,13 @@ const closeWait = () => {
 }
 
 async function start(text) {
+  const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379'
+  const store = new KeyvRedis(redisUrl)
+  const messageStore = new Keyv({ store, namespace: 'chatgpt-demo' })
+
   const api = new ChatGPTAPI({
     apiKey: process.env.OPENAI_API_KEY,
+    messageStore,
     debug: false
   })
 
