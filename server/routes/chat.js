@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/send', async (req, res, next) => {
     console.log(`req.query.chatId=${req.query.chatId}`)
     console.log(`req.query.text=${req.query.text}`)
-    if (!req.query.text.trim()) {
+    if (!req.query.text?.trim()) {
         res.send("report")
     } else {
         let window
@@ -28,4 +28,5 @@ router.get('/send', async (req, res, next) => {
 });
 
 
+console.debug("chat.js loaded")
 export default router

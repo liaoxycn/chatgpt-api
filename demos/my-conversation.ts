@@ -1,9 +1,11 @@
 import KeyvRedis from '@keyv/redis'
 import dotenv from 'dotenv-safe'
+import proxy from 'https-proxy-agent'
 import Keyv from 'keyv'
+import nodeFetch from 'node-fetch'
 import { oraPromise } from 'ora'
 
-import { ChatGPTAPI } from '../src'
+import { ChatGPTAPI, ChatGPTUnofficialProxyAPI } from '../src'
 
 dotenv.config()
 
@@ -21,6 +23,18 @@ async function start(text) {
   const api = new ChatGPTAPI({
     apiKey: process.env.OPENAI_API_KEY,
     messageStore,
+    fetch: (url, options = {}) => {
+      const defaultOptions = {
+        agent: proxy('http://127.0.0.1:1080')
+      }
+
+      const mergedOptions = {
+        ...defaultOptions,
+        ...options
+      }
+
+      return nodeFetch(url, mergedOptions)
+    },
     debug: false
   })
 
@@ -51,6 +65,7 @@ export default {
         wait = true
 
         const submit = async () => {
+          console.log('#submit 首次chat')
           let { res, api } = await start(text)
           chatWindowMap[chatId] = { res, api }
           window = chatWindowMap[chatId]
