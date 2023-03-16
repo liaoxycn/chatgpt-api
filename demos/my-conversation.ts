@@ -60,7 +60,7 @@ export default {
         if (!text.trim()) return
 
         if (wait) {
-          return 'chatGPT 正在思考中，请稍后提问'
+          return { text: 'chatGPT 正在思考中，请稍后提问', status: 1 }
         }
         wait = true
 
@@ -70,7 +70,7 @@ export default {
           chatWindowMap[chatId] = { res, api }
           window = chatWindowMap[chatId]
           closeWait()
-          return res.text
+          return { text: res.text, status: 0 }
         }
         //first submit
         if (!window) {
@@ -89,11 +89,11 @@ export default {
               }
             )
             closeWait()
-            resolve(window.res.text)
+            resolve({ text: window.res.text, status: 0 })
           } catch (e) {
             try {
-              let text = await submit()
-              resolve(text)
+              let res = await submit()
+              resolve(res)
             } catch (e) {
               resolve('请求次数过多，请稍后再试')
               closeWait()

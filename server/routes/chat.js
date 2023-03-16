@@ -15,11 +15,11 @@ router.get('/send', async (req, res, next) => {
         let window
         try {
             window = await chat.getChatWindow(req.query.chatId);
-            let text = await window.send(req.query.text);
+            let {text, status} = await window.send(req.query.text);
             console.log("chatGPT： " + text);
-            res.send(text)
+            res.send({text, status})
         } catch (error) {
-            res.send(error);
+            res.send({text: error, status: 1});
         } finally {
             window.close();
         }
