@@ -1,3 +1,4 @@
+import * as console from 'console'
 import KeyvRedis from '@keyv/redis'
 import dotenv from 'dotenv-safe'
 import proxy from 'https-proxy-agent'
@@ -20,22 +21,30 @@ const store = new KeyvRedis(redisUrl)
 const messageStore = new Keyv({ store, namespace: 'chatgpt-demo' })
 
 async function start(text) {
-  const api = new ChatGPTAPI({
-    apiKey: process.env.OPENAI_API_KEY,
+  // const api = new ChatGPTAPI({
+  //   // completionParams: {
+  //   //   model: 'gpt-3.5-turbo'
+  //   // },
+  //   apiKey: process.env.OPENAI_API_KEY,
+  //   messageStore,
+  //   fetch: (url, options = {}) => {
+  //     const defaultOptions = {
+  //       agent: proxy('http://127.0.0.1:1080')
+  //     }
+  //
+  //     const mergedOptions = {
+  //       ...defaultOptions,
+  //       ...options
+  //     }
+  //
+  //     return nodeFetch(url, mergedOptions)
+  //   },
+  //   debug: false
+  // })
+  const api = new ChatGPTUnofficialProxyAPI({
     messageStore,
-    fetch: (url, options = {}) => {
-      const defaultOptions = {
-        agent: proxy('http://127.0.0.1:1080')
-      }
-
-      const mergedOptions = {
-        ...defaultOptions,
-        ...options
-      }
-
-      return nodeFetch(url, mergedOptions)
-    },
-    debug: false
+    accessToken: process.env.OPENAI_ACCESS_TOKEN,
+    apiReverseProxyUrl: 'https://freechat.xyhelper.cn/backend-api/conversation'
   })
 
   let res = await oraPromise(api.sendMessage(text), {
@@ -92,6 +101,7 @@ export default {
             resolve({ text: window.res.text, status: 0 })
           } catch (e) {
             try {
+              console.error(e)
               let res = await submit()
               resolve(res)
             } catch (e) {

@@ -19,6 +19,7 @@ router.get('/send', async (req, res, next) => {
             console.log("chatGPT： " + text);
             res.send({text, status})
         } catch (error) {
+            console.error(error);
             res.send({text: error, status: 1});
         } finally {
             window.close();
