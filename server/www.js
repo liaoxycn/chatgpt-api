@@ -14,7 +14,7 @@ let debug = debug0('express-test:server');
  * Get port from environment and store in Express.
  */
 
-let port = normalizePort(process.env.PORT || '881');
+let port = normalizePort(process.env.PORT || '884');
 app.set('port', port);
 
 /**
