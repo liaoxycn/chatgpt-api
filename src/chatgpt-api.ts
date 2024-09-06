@@ -52,7 +52,7 @@ export class ChatGPTAPI {
     const {
       apiKey,
       apiOrg,
-      apiBaseUrl = 'https://api.openai.com/v1',
+      apiBaseUrl = 'https://xiaoai.plus/v1',
       debug = false,
       messageStore,
       completionParams,

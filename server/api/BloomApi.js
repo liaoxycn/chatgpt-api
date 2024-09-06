@@ -73,12 +73,6 @@ const run = (user_input, history) => {
   });
 };
 
-run("做爱有哪些姿势", null).then(({ text, history }) => {
-  console.log(text);
-  run("人类为什么要做爱", history).then(({ text, history }) => {
-    console.log(text);
-  });
-});
 
 export default {
   run
